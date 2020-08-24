@@ -1,5 +1,8 @@
 var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
 var packageBody,ground;
+var leftContainerPart, leftContainerPartSp;
+var rightContainerPart, rightContainerPartSp;
+var bottomContainerPart, bottomContainerPartSp;
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
@@ -23,6 +26,13 @@ function setup() {
 	helicopterSprite.addImage(helicopterIMG);
 	helicopterSprite.scale=0.6;
 
+	leftContainerPartSp=createSprite(width/2, 650, 20, 100);
+	rightContainerPartSp=createSprite(width/2, 650, 20, 100);
+	bottomContainerPartSp=createSprite(width/2, 650, 200, 20);
+	leftContainerPartSp.shapeColor = "red";
+  	rightContainerPartSp.shapeColor = "red";
+  	bottomContainerPartSp.shapeColor = "red";
+
 	groundSprite=createSprite(width/2, height-35, width,10);
 	groundSprite.shapeColor=color(255);
 
@@ -31,10 +41,17 @@ function setup() {
 	world = engine.world;
 
 	
-
+	//create the package
 	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:.5,isStatic:true}) ;
 	World.add(world, packageBody);
 	
+	//create the container
+	leftContainerPart = Bodies.rectangle((width/2)-110 , 610, 20, 100, {isStatic:true});
+	rightContainerPart = Bodies.rectangle((width/2)+110, 610, 20, 100, {isStatic:true});
+	bottomContainerPart = Bodies.rectangle(width/2, 630, 200, 20, {isStatic:true});
+	World.add(world, leftContainerPart);
+	World.add(world, rightContainerPart);
+	World.add(world, bottomContainerPart);
 
 	//Create a Ground
 	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
@@ -50,7 +67,13 @@ function draw() {
   rectMode(CENTER);
   background(0);
   packageSprite.x= packageBody.position.x; 
-  packageSprite.y= packageBody.position.y; 
+  packageSprite.y= packageBody.position.y;
+  leftContainerPartSp.x= leftContainerPart.position.x; 
+  leftContainerPartSp.y= leftContainerPart.position.y;
+  rightContainerPartSp.x= rightContainerPart.position.x; 
+  rightContainerPartSp.y= rightContainerPart.position.y;
+  bottomContainerPartSp.x= bottomContainerPart.position.x; 
+  //bottomContainerPartSp.y= bottomContainerPart.position.y; 
   drawSprites();
 }
 
@@ -63,6 +86,3 @@ function keyPressed() {
 	Matter.Body.setStatic(packageBody, false);
   }
 }
-
-
-
